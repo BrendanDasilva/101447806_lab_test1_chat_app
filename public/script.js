@@ -1,3 +1,5 @@
+const socket = io.connect("http://localhost:3000");
+
 // handle login
 document.addEventListener("DOMContentLoaded", function () {
   const loginForm = document.getElementById("login-form");
@@ -56,6 +58,76 @@ document.addEventListener("DOMContentLoaded", function () {
           "Signup failed. Please try again";
       }
     });
+  }
+
+  // handle group chat
+  if (window.location.pathname === "/chat") {
+    const username = localStorage.getItem("username");
+    const room = localStorage.getItem("room");
+
+    if (!username || !room) {
+      window.location.href = "/"; // if no session user gets redirected back to login
+    }
+
+    document.getElementById("room-title").innerText = `Room: ${room}`;
+
+    // join the room
+    socket.emit("join_group", { username, room });
+
+    // load previous messages
+    socket.on("load_messages", (messages) => {
+      const messagesDiv = document.getElementById("messages");
+      messages.forEach((msg) => {
+        messagesDiv.innerHTML += `<p><strong>${msg.from_user}</strong>: ${msg.message}</p>`;
+      });
+    });
+
+    // receive new message
+    socket.on("group_message", (data) => {
+      const messagesDiv = document.getElementById("messages");
+      messagesDiv.innerHTML += `<p><strong>${data.from_user}</strong>: ${data.message}</p>`;
+    });
+
+    // send message
+    document
+      .getElementById("message-input")
+      .addEventListener("keypress", (event) => {
+        if (event.key === "Enter") sendMessage();
+      });
+
+    function sendMessage() {
+      const message = document.getElementById("message-input").value.trim();
+      if (message === "") return;
+
+      socket.emit("group_message", { username, room, message });
+
+      document.getElementById("message-input").value = "";
+    }
+
+    // typing indicator
+    function notifyTyping() {
+      socket.emit("typing", room);
+    }
+
+    socket.on("user_typing", (data) => {
+      document.getElementById("typing-indicator").innerText =
+        "Someone is typing...";
+      setTimeout(() => {
+        document.getElementById("typing-indicator").innerText = "";
+      }, 3000);
+    });
+
+    // leave room
+    function leaveRoom() {
+      socket.emit("leave_group", { username, room });
+      localStorage.removeItem("room");
+      window.location.href = "/rooms";
+    }
+
+    // attach functions to global scope
+    window.sendMessage = sendMessage;
+    window.notifyTyping = notifyTyping;
+    window.leaveRoom = leaveRoom;
   }
 });
 

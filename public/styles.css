@@ -2,6 +2,14 @@ body {
   font-family: Arial, sans-serif;
 }
 
+input {
+  margin-bottom: 10px;
+}
+
+button {
+  width: 100%;
+}
+
 .container {
   max-width: 500px;
   padding: 20px;
@@ -10,10 +18,17 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-input {
-  margin-bottom: 10px;
+.chat-box {
+  width: 50%;
+  height: 300px;
+  overflow-y: auto;
+  border-radius: 5px;
+  background: #f8f9fa;
 }
 
-button {
-  width: 100%;
+.chat-messages p {
+  margin: 5px 0;
+  padding: 8px;
+  background: #e9ecef;
+  border-radius: 5px;
 }

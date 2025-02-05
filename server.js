@@ -26,23 +26,33 @@ const SERVER_PORT = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static("public"));
 
 // start server
 const server = app.listen(SERVER_PORT, () =>
   console.log(`Server running on port ${SERVER_PORT}`)
 );
 
+const io = socketio(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
+
 // html routes
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "login.html"));
-});
-app.get("/signup", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "signup.html"));
-});
-app.get("/rooms", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "rooms.html"));
-});
+app.get("/", (req, res) =>
+  res.sendFile(path.join(__dirname, "views", "login.html"))
+);
+app.get("/signup", (req, res) =>
+  res.sendFile(path.join(__dirname, "views", "signup.html"))
+);
+app.get("/rooms", (req, res) =>
+  res.sendFile(path.join(__dirname, "views", "rooms.html"))
+);
+app.get("/chat", (req, res) =>
+  res.sendFile(path.join(__dirname, "views", "chat.html"))
+);
 
 // api endpoints
 app.post("/signup", async (req, res) => {
@@ -70,47 +80,62 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
+
+    // check if the user exists
     const user = await User.findOne({ username });
-
     if (!user) {
-      return res.status(401).send("Invalid username or password");
+      console.log("User not found:", username);
+      return res.status(401).json({ message: "Invalid username or password" });
     }
 
+    // compare hashed password
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log(`🔍 bcrypt.compare() result: ${isMatch}`);
+
     if (!isMatch) {
-      return res.status(401).send("Invalid username or password");
+      console.log("Incorrect password for:", username);
+      return res.status(401).json({ message: "Invalid username or password" });
     }
 
-    res.status(200).send("Login successful");
+    console.log(`Login successful for user: ${username}`);
+    res.status(200).json({ message: "Login successful" });
   } catch (err) {
     console.error("Login Error:", err.message);
-    res.status(500).send("Error logging in user");
+    res.status(500).json({ message: "Error logging in user" });
   }
 });
 
 // websockets
-const io = socketio(server);
 io.on("connection", (socket) => {
   console.log(`New user connected:" ${socket.id}`);
 
-  socket.on("join_group", (room) => {
+  // join a room
+  socket.on("join_group", async ({ username, room }) => {
     socket.join(room);
-    console.log(`${socket.id} joined room: ${room}`);
+    console.log(`${username} joined room: ${room}`);
+
+    // send past messages from MongoDB
+    const messages = await Message.find({ room }).sort({ date_sent: 1 });
+    socket.emit("load_messages", messages);
   });
 
-  socket.on("leave_group", (room) => {
-    socket.leave(room);
-    console.log(`${socket.id} left room: ${room}`);
-  });
-
+  // sending messages
   socket.on("group_message", async (data) => {
-    const message = new Message({
-      from_user: data.username,
-      room: data.room,
-      message: data.message,
+    const { username, room, message } = data;
+
+    const newMessage = new Message({
+      from_user: username,
+      room: room,
+      message: message,
     });
-    await message.save();
-    io.to(data.room).emit("group_message", message);
+
+    await newMessage.save();
+
+    io.to(room).emit("group_message", {
+      from_user: username,
+      message: message,
+      date_sent: newMessage.date_sent,
+    });
   });
 
   socket.on("private_message", async (data) => {
@@ -123,10 +148,19 @@ io.on("connection", (socket) => {
     io.to(data.to_user).emit("private_message", message);
   });
 
+  // typing indicator
   socket.on("typing", (room) => {
     socket.to(room).emit("user_typing", { user: socket.id });
   });
 
+  // leave room
+  socket.on("leave_group", ({ username, room }) => {
+    socket.leave(room);
+    console.log(`${username} left room: ${room}`);
+    io.to(room).emit("user_left", `${username} left the room`);
+  });
+
+  // disconnect user
   socket.on("disconnect", () => {
     console.log(`User disconnected: ${socket.id}`);
   });
