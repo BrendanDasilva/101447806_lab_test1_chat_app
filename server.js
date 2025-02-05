@@ -105,14 +105,28 @@ app.post("/login", async (req, res) => {
   }
 });
 
+// store online users
+let onlineUsers = {};
+
 // websockets
 io.on("connection", (socket) => {
-  console.log(`New user connected:" ${socket.id}`);
+  console.log(`New user connected: ${socket.id}`);
+
+  // Handle when user enters the rooms lobby
+  socket.on("join_lobby", (username) => {
+    onlineUsers[socket.id] = { username, room: "Rooms Lobby" };
+    io.emit("update_users", Object.values(onlineUsers)); // broadcast updated list
+    console.log(`${username} is now in the Rooms Lobby`);
+  });
 
   // join a room
   socket.on("join_group", async ({ username, room }) => {
     socket.join(room);
     console.log(`${username} joined room: ${room}`);
+
+    // update user in onlineUsers object
+    onlineUsers[socket.id] = { username, room };
+    io.emit("update_users", Object.values(onlineUsers)); //broadcast updated list
 
     // send past messages from MongoDB
     const messages = await Message.find({ room }).sort({ date_sent: 1 });
@@ -157,11 +171,18 @@ io.on("connection", (socket) => {
   socket.on("leave_group", ({ username, room }) => {
     socket.leave(room);
     console.log(`${username} left room: ${room}`);
-    io.to(room).emit("user_left", `${username} left the room`);
+
+    // nove user back to the rooms lobby
+    if (onlineUsers[socket.id]) {
+      onlineUsers[socket.id].room = "Rooms Lobby";
+    }
+    io.emit("update_users", Object.values(onlineUsers)); // broadcast updated list
   });
 
   // disconnect user
   socket.on("disconnect", () => {
     console.log(`User disconnected: ${socket.id}`);
+    delete onlineUsers[socket.id]; // remove user from list
+    io.emit("update_users", Object.values(onlineUsers)); // broadcast updated list
   });
 });

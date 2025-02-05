@@ -143,3 +143,23 @@ document.getElementById("logout-btn")?.addEventListener("click", () => {
   localStorage.removeItem("room");
   window.location.href = "/";
 });
+
+// handle online users list update
+socket.on("update_users", (users) => {
+  const usersList = document.getElementById("users-list");
+  usersList.innerHTML = ""; // clear existing list
+
+  users.forEach((user) => {
+    const userItem = document.createElement("li");
+    userItem.textContent = `${user.username} (${user.room})`;
+    usersList.appendChild(userItem);
+  });
+});
+
+// detect if the user is in the rooms selection page
+if (window.location.pathname === "/rooms") {
+  const username = localStorage.getItem("username");
+  if (username) {
+    socket.emit("join_lobby", username); // send event to mark user as in the lobby
+  }
+}

@@ -11,22 +11,20 @@
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body class="d-flex flex-column align-items-center vh-100">
-    <!-- Online Users List -->
     <div id="online-users">
       <h4>Online Users</h4>
       <ul id="users-list" class="list-unstyled"></ul>
     </div>
 
-    <!-- Main Content -->
     <div class="main-container text-center">
       <h1 id="room-title"></h1>
 
-      <!-- Chat Messages -->
+      <!-- chat Messages -->
       <div class="chat-box border">
         <div id="messages"></div>
       </div>
 
-      <!-- Message Input Box -->
+      <!-- message Input Box -->
       <div class="message-container mt-3">
         <input
           type="text"
@@ -41,7 +39,6 @@
 
       <p id="typing-indicator" class="text-muted mt-2"></p>
 
-      <!-- Buttons in one row -->
       <div class="button-group">
         <button class="btn btn-secondary" onclick="leaveRoom()">
           Back to Rooms Lobby
