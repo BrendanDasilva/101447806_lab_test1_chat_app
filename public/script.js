@@ -136,3 +136,10 @@ function joinRoom(room) {
   localStorage.setItem("room", room);
   window.location.href = "/chat";
 }
+
+// logout
+document.getElementById("logout-btn")?.addEventListener("click", () => {
+  localStorage.removeItem("username");
+  localStorage.removeItem("room");
+  window.location.href = "/";
+});

@@ -1,5 +1,6 @@
 body {
   font-family: Arial, sans-serif;
+  background-color: bisque;
 }
 
 input {
@@ -31,4 +32,77 @@ button {
   padding: 8px;
   background: #e9ecef;
   border-radius: 5px;
+}
+#online-users {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 250px;
+  background-color: #f8f9fa;
+  padding: 20px;
+  overflow-y: auto;
+  border-right: 2px solid #dee2e6;
+}
+
+.main-container {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+}
+
+/* Chat Box */
+.chat-box {
+  width: 60%;
+  max-width: 700px;
+  min-width: 350px;
+  height: 400px;
+  overflow-y: auto;
+  background: white;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+/* Message Input */
+.message-container {
+  display: flex;
+  width: 60%;
+  max-width: 700px;
+  align-items: center;
+  gap: 10px;
+}
+
+#message-input {
+  flex-grow: 1;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  height: 42px;
+  line-height: 42px;
+  margin: 0;
+}
+
+.btn-send {
+  width: 100px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+/* Buttons */
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-secondary,
+.btn-danger {
+  width: 150px;
+  text-align: center;
 }
