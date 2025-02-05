@@ -2,7 +2,9 @@
 
 ## Overview
 
-This is a real-time chat application built using **Node.js**, **Express.js**, **MongoDB**, **Socket.io**, and **Bootstrap** for styling. It allows users to sign up, log in, and participate in public chat rooms with real-time messaging. The application also tracks online users and allows for future implementation of private messaging.
+This is a real-time chat application built using **Node.js**, **Express.js**, **MongoDB**, **Socket.io**, and **Bootstrap** for styling. It allows users to sign up, log in, and participate in public chat rooms with real-time messaging. The application also tracks online users and allows for future implementation of private messaging. We had a 12-hour time window to complete this challenge.
+
+You can view a quick walkthrough here: https://youtu.be/wrBkJihn8Zo
 
 ## Features
 
