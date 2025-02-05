@@ -65,6 +65,9 @@ app.post("/login", async (req, res) => {
     const user = await User.findOne({ username, password });
     if (!user) return res.status(401).send("Invalid username or password");
 
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) return res.status(401).send("Invalid username or password");
+
     res.status(200).send({ message: "Login successful" });
   } catch (err) {
     res.status(500).send("Error logging in");
