@@ -32,6 +32,7 @@ button {
   padding: 8px;
   background: #e9ecef;
   border-radius: 5px;
+  text-align: left;
 }
 #online-users {
   position: absolute;
