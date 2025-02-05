@@ -5,7 +5,8 @@ const path = require("path");
 const socketio = require("socket.io");
 const bodyParser = require("body-parser");
 const User = require("./models/User");
-const Message = require("./models/Message");
+const Message = require("./models/GroupMessage");
+const PrivateMessage = require("./models/PrivateMessage");
 
 const app = express();
 const SERVER_PORT = 3000;
@@ -97,6 +98,20 @@ io.on("connection", (socket) => {
     });
     await message.save();
     io.to(data.room).emit("group_message", message);
+  });
+
+  socket.on("private_message", async (data) => {
+    const message = new PrivateMessage({
+      from_user: data.from_user,
+      to_user: data.to_user,
+      message: data.message,
+    });
+    await message.save();
+    io.to(data.to_user).emit("private_message", message);
+  });
+
+  socket.on("typing", (room) => {
+    socket.to(room).emit("user_typing", { user: socket.id });
   });
 
   socket.on("disconnect", () => {
