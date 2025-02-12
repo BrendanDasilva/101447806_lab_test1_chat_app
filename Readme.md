@@ -34,7 +34,7 @@ You can view a quick walkthrough here: https://youtu.be/wrBkJihn8Zo
 
 1. Clone this repository:
    ```sh
-   git clone https://github.com/your-username/chat-app.git
+   git clone https://github.com/BrendanDasilva/chat-app.git
    cd chat-app
    ```
 2. Install dependencies:
