@@ -18,22 +18,22 @@ You can view a **quick walkthrough** of the application here:
 Below are some previews of the application:
 
 - **Sign Up Page**  
-  ![Sign Up](assets/screenshots/signup.png)
+  ![Sign Up](public/assets/screenshots/signup.png)
 
 - **Login Page**  
-  ![Login](assets/screenshots/login.png)
+  ![Login](public/assets/screenshots/login.png)
 
 - **Rooms Lobby**  
-  ![Rooms Lobby](assets/screenshots/rooms-lobby.png)
+  ![Rooms Lobby](public/assets/screenshots/rooms-lobby.png)
 
 - **Group Chat**  
-  ![Group Chat](assets/screenshots/group-chat.png)
+  ![Group Chat](public/assets/screenshots/group-chat.png)
 
 - **Private Messages**
-  ![Private Messages](assets/screenshots/private-messages.png)
+  ![Private Messages](public/assets/screenshots/private-messages.png)
 
 - **Private Chat**
-  ![Private Chat](assets/screenshots/private-chat.png)
+  ![Private Chat](public/assets/screenshots/private-chat.png)
 
 ---
 
