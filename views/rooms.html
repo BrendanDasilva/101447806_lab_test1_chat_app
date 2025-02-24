@@ -10,50 +10,138 @@
     />
     <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body class="d-flex justify-content-center align-items-center vh-100">
-    <div class="container text-center d-flex">
-      <div id="online-users" class="border p-3 me-3" style="width: 250px">
-        <h4>Online Users</h4>
-        <ul id="users-list" class="list-unstyled"></ul>
-      </div>
-
-      <div class="w-100">
+  <body class="d-flex vh-100 w-100">
+    <div class="container-fluid d-flex flex-grow-1 p-3">
+      <!-- Room Selection -->
+      <div class="chat-container d-flex flex-column flex-grow-1">
         <h1 class="mb-4">Select a Chat Room</h1>
-        <div class="list-group w-50 mx-auto">
+
+        <!-- Room Tiles Wrapper -->
+        <div class="room-grid">
           <button
-            class="list-group-item list-group-item-action"
+            id="private-messages-btn"
+            class="room-tile btn"
+            onclick="goToPrivateMessages()"
+          >
+            <span>Private Messages</span>
+          </button>
+          <button
+            id="sports-room"
+            class="room-tile btn btn-light"
             onclick="joinRoom('sports')"
           >
-            Sports
+            <span>Sports</span>
           </button>
           <button
-            class="list-group-item list-group-item-action"
+            id="tech-room"
+            class="room-tile btn btn-light"
             onclick="joinRoom('technology')"
           >
-            Technology
+            <span>Technology</span>
           </button>
           <button
-            class="list-group-item list-group-item-action"
+            id="movies-room"
+            class="room-tile btn btn-light"
             onclick="joinRoom('movies')"
           >
-            Movies
+            <span>Movies</span>
           </button>
           <button
-            class="list-group-item list-group-item-action"
+            id="gaming-room"
+            class="room-tile btn btn-light"
             onclick="joinRoom('gaming')"
           >
-            Gaming
+            <span>Gaming</span>
           </button>
           <button
-            class="list-group-item list-group-item-action"
+            id="tv-room"
+            class="room-tile btn btn-light"
+            onclick="joinRoom('tv')"
+          >
+            <span>Television</span>
+          </button>
+          <button
+            id="books-room"
+            class="room-tile btn btn-light"
+            onclick="joinRoom('books')"
+          >
+            <span>Books</span>
+          </button>
+          <button
+            id="photography-room"
+            class="room-tile btn btn-light"
+            onclick="joinRoom('photography')"
+          >
+            <span>Photography</span>
+          </button>
+          <button
+            id="fitness-room"
+            class="room-tile btn btn-light"
+            onclick="joinRoom('fitness')"
+          >
+            <span>Fitness & Health</span>
+          </button>
+          <button
+            id="music-room"
+            class="room-tile btn btn-light"
+            onclick="joinRoom('music')"
+          >
+            <span>Music</span>
+          </button>
+          <button
+            id="travel-room"
+            class="room-tile btn btn-light"
+            onclick="joinRoom('travel')"
+          >
+            <span>Travel</span>
+          </button>
+          <button
+            id="food-room"
+            class="room-tile btn btn-light"
+            onclick="joinRoom('food')"
+          >
+            <span>Food & Cooking</span>
+          </button>
+          <button
+            id="cars-room"
+            class="room-tile btn btn-light"
+            onclick="joinRoom('cars')"
+          >
+            <span>Cars</span>
+          </button>
+          <button
+            id="anime-room"
+            class="room-tile btn btn-light"
+            onclick="joinRoom('anime')"
+          >
+            <span>Anime</span>
+          </button>
+          <button
+            id="science-room"
+            class="room-tile btn btn-light"
+            onclick="joinRoom('science')"
+          >
+            <span>Science</span>
+          </button>
+          <button
+            id="random-room"
+            class="room-tile btn btn-light"
             onclick="joinRoom('random')"
           >
-            Random
+            <span>Random</span>
           </button>
         </div>
+      </div>
 
-        <div class="mt-3">
-          <button id="logout-btn" class="btn btn-danger">Logout</button>
+      <!-- Online Users Sidebar -->
+      <div id="online-users" class="border p-3 ms-3 d-flex flex-column">
+        <h4>Online Users</h4>
+        <div class="d-flex flex-column flex-grow-1">
+          <ul
+            id="users-list"
+            class="list-unstyled flex-grow-1 overflow-auto"
+          ></ul>
+          <button id="logout-btn" class="btn btn-danger mt-3">Logout</button>
         </div>
       </div>
     </div>

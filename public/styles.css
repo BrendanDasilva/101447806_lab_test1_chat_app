@@ -1,30 +1,172 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: bisque;
+  background-color: #3976c7;
 }
 
 input {
   margin-bottom: 10px;
 }
 
-button {
+#login-signup-container {
+  background-color: #ccc;
+  padding: 50px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+}
+
+/* Chat Layout */
+.container-fluid {
+  display: flex;
+  flex-grow: 1;
+  padding: 20px;
+  margin-right: 250px;
+}
+
+/* Chat Container */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 0;
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  margin: 0 auto;
+  height: auto;
+}
+
+/* Room Grid Layout */
+.room-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-auto-rows: min-content;
+  gap: 15px;
+  width: 100%;
+  max-width: 100%;
+  padding: 10px;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+/* Room Tile Styling */
+.room-tile {
+  aspect-ratio: 1 / 1;
+  font-size: 18px;
+  text-align: right;
+  border-radius: 10px;
+  border: 3px solid #3976c7;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 15px;
+  position: relative;
+  overflow: hidden;
   width: 100%;
 }
 
-.container {
-  max-width: 500px;
-  padding: 20px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.room-tile span {
+  background-color: rgba(50, 50, 50, 0.8);
+  color: white;
+  padding: 5px 10px;
+  font-size: 18px;
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08rem;
 }
 
+.room-tile:hover {
+  transform: scale(1.025);
+  box-shadow: 0 6px 12px #3976c7;
+  border-color: #3976c7 !important;
+}
+
+#private-messages-btn {
+  background-color: orange;
+}
+
+/* Assigning Background Images to Specific Tiles */
+#private-messages-btn {
+  background-image: url("/assets/images/private-messages.jpg");
+}
+
+#sports-room {
+  background-image: url("/assets/images/sports.jpg");
+}
+
+#tech-room {
+  background-image: url("/assets/images/tech.jpg");
+}
+
+#movies-room {
+  background-image: url("/assets/images/movies.jpg");
+}
+
+#gaming-room {
+  background-image: url("/assets/images/gaming.jpg");
+}
+
+#tv-room {
+  background-image: url("/assets/images/tv.jpg");
+}
+
+#books-room {
+  background-image: url("/assets/images/books.jpg");
+}
+
+#photography-room {
+  background-image: url("/assets/images/photography.jpg");
+}
+
+#fitness-room {
+  background-image: url("/assets/images/fitness.jpg");
+}
+
+#music-room {
+  background-image: url("/assets/images/music.jpg");
+}
+
+#travel-room {
+  background-image: url("/assets/images/travel.jpg");
+}
+
+#food-room {
+  background-image: url("/assets/images/food.jpg");
+}
+
+#science-room {
+  background-image: url("/assets/images/science.jpg");
+}
+
+#cars-room {
+  background-image: url("/assets/images/cars.jpg");
+}
+
+#anime-room {
+  background-image: url("/assets/images/anime.jpg");
+}
+
+#random-room {
+  background-image: url("/assets/images/random.jpg");
+}
+
+/* Chat Box */
 .chat-box {
-  width: 50%;
-  height: 300px;
+  flex-grow: 1;
+  width: 100%;
+  max-width: 100%;
+  height: 400px;
   overflow-y: auto;
-  border-radius: 5px;
   background: #f8f9fa;
+  border-radius: 5px;
+  padding: 10px;
 }
 
 .chat-messages p {
@@ -34,44 +176,128 @@ button {
   border-radius: 5px;
   text-align: left;
 }
-#online-users {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 250px;
-  background-color: #f8f9fa;
-  padding: 20px;
-  overflow-y: auto;
-  border-right: 2px solid #dee2e6;
+
+.btn-add-chat {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
 }
 
-.main-container {
-  margin-left: 260px;
-  width: calc(100% - 260px);
+.private-chat-item {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-top: 20px;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: white;
+  margin-bottom: 10px;
+  text-align: left;
 }
 
-/* Chat Box */
-.chat-box {
-  width: 60%;
-  max-width: 700px;
-  min-width: 350px;
-  height: 400px;
+.chat-username {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.chat-last-message {
+  font-size: 14px;
+  color: gray;
+}
+
+/* Online Users */
+#online-users {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 250px;
+  min-width: 250px;
+  background-color: #f8f9fa;
   overflow-y: auto;
-  background: white;
+  border-left: 2px solid #dee2e6;
+  padding: 15px;
+  z-index: 10;
+}
+
+#online-users h4 {
+  background-color: green;
+  color: white;
+  text-align: center;
+  padding: 10px;
   border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+#users-list {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+#users-list li {
+  background-color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease-in-out;
+  text-align: left;
+  width: 100%;
+}
+
+#users-list li:hover {
+  background-color: #e0ffe0;
+  cursor: pointer;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-status {
+  font-size: 14px;
+}
+
+.user-name {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Room name styling */
+.user-room {
+  font-size: 14px;
+  color: gray;
+  margin-top: 2px;
+}
+
+/* Remove underline from usernames */
+#users-list a {
+  text-decoration: none;
+  color: inherit;
+}
+
+#logout-btn {
+  width: 100%;
+  margin: auto auto 10px auto;
   padding: 10px;
 }
 
 /* Message Input */
 .message-container {
   display: flex;
-  width: 60%;
-  max-width: 700px;
+  width: 100%;
   align-items: center;
   gap: 10px;
 }
@@ -102,8 +328,7 @@ button {
   margin-top: 10px;
 }
 
-.btn-secondary,
-.btn-danger {
-  width: 150px;
-  text-align: center;
-}
+/* Mobile Responsive: */
+/* @media (max-width: 700px) {
+
+} */

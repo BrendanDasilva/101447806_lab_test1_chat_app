@@ -105,6 +105,73 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.get("/chat_private", (req, res) =>
+  res.sendFile(path.join(__dirname, "views", "chat_private.html"))
+);
+
+app.get("/private_messages", (req, res) =>
+  res.sendFile(path.join(__dirname, "views", "private_messages.html"))
+);
+
+app.get("/get_private_chats/:username", async (req, res) => {
+  try {
+    const { username } = req.params;
+
+    // Fetch unique chat partners
+    const chats = await PrivateMessage.aggregate([
+      {
+        $match: {
+          $or: [{ from_user: username }, { to_user: username }],
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $cond: [
+              { $eq: ["$from_user", username] },
+              "$to_user",
+              "$from_user",
+            ],
+          },
+          lastMessage: { $last: "$message" },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          username: "$_id",
+          lastMessage: 1,
+        },
+      },
+    ]);
+
+    res.json(chats);
+  } catch (err) {
+    console.error("Error fetching private chats:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// get private messages between two users
+app.get("/get_private_messages/:from_user/:to_user", async (req, res) => {
+  try {
+    const { from_user, to_user } = req.params;
+
+    // Find messages between the two users (both directions)
+    const messages = await PrivateMessage.find({
+      $or: [
+        { from_user: from_user, to_user: to_user },
+        { from_user: to_user, to_user: from_user },
+      ],
+    }).sort({ date_sent: 1 });
+
+    res.json(messages);
+  } catch (err) {
+    console.error("Error fetching private messages:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 // store online users
 let onlineUsers = {};
 
@@ -153,18 +220,27 @@ io.on("connection", (socket) => {
   });
 
   socket.on("private_message", async (data) => {
-    const message = new PrivateMessage({
-      from_user: data.from_user,
-      to_user: data.to_user,
-      message: data.message,
+    const { from_user, to_user, message } = data;
+
+    // Save message in database
+    const newMessage = new PrivateMessage({ from_user, to_user, message });
+    await newMessage.save();
+
+    // Emit message to the recipient if they are online
+    Object.entries(onlineUsers).forEach(([socketId, user]) => {
+      if (user.username === to_user) {
+        io.to(socketId).emit("private_message", { from_user, message });
+      }
     });
-    await message.save();
-    io.to(data.to_user).emit("private_message", message);
   });
 
   // typing indicator
-  socket.on("typing", (room) => {
-    socket.to(room).emit("user_typing", { user: socket.id });
+  socket.on("typing", ({ username, room }) => {
+    socket.to(room).emit("user_typing", { username });
+  });
+
+  socket.on("stop_typing", (room) => {
+    socket.to(room).emit("user_stopped_typing");
   });
 
   // leave room
