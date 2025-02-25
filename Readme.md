@@ -11,7 +11,7 @@ You can view a quick walkthrough of the **first pass** here: https://youtu.be/wr
 
 **_Second Pass_**
 You can view a **quick walkthrough** of the application here:  
-📹 _[Insert Video Link Here]_
+https://youtu.be/sDEHsHfma54
 
 ## **Screenshots**
 
